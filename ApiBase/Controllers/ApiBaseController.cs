@@ -81,7 +81,6 @@ namespace ApiBase.Controllers
             if (PessoaBanco.Nome == null && PessoaBanco.Email == null)
                 return BadRequest(new { Erro = "O Nome e o Email são obrigatórios" });
 
-            PessoaBanco.Id = pessoa.Id;
             PessoaBanco.Nome = pessoa.Nome;
             PessoaBanco.Email = pessoa.Email;
             PessoaBanco.DtNasc = pessoa.DtNasc;
