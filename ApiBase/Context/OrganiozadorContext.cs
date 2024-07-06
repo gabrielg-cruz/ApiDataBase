@@ -10,6 +10,6 @@ namespace ApiBase.Context
 
         }
 
-        public DbSet<Pessoas> PessoasBD { get; set; }
+        public DbSet<Pessoas> Pessoa { get; set; }
     }
 }

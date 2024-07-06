@@ -18,7 +18,7 @@ namespace ApiBase.Controllers
         [HttpGet("{id}")]
         public IActionResult ObterPorId(int id)
         {
-            var pessoa = _context.PessoasBD.Find(id);
+            var pessoa = _context.Pessoa.Find(id);
             if (pessoa == null)
                 return NotFound();
 
@@ -28,21 +28,21 @@ namespace ApiBase.Controllers
         [HttpGet("ObterTodos")]
         public IActionResult ObterTodos()
         {
-            var pessoa = _context.PessoasBD.ToList();
+            var pessoa = _context.Pessoa.ToList();
             return Ok(pessoa);
         }
 
         [HttpGet("ObterPorNome")]
         public IActionResult ObterPorNome(string nome)
         {
-            var pessoa = _context.PessoasBD.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+            var pessoa = _context.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
             return Ok(pessoa);
         }
 
         /*    [HttpGet("ObterPorIdade")]
             public IActionResult ObterPorIdade(DateTime dataNascimento)
             {
-                DateTime pessoaDataNasc = _context.PessoasBD.Where(x => x.DataNascimento.Date == dataNascimento.Date);
+                DateTime pessoaDataNasc = _context.Pessoa.Where(x => x.DataNascimento.Date == dataNascimento.Date);
                 var idade = pessoaDataNasc.Year - DateTime.Now.Year;
 
                 if (DateTime.Now < pessoaDataNasc.AddYears(idade))
@@ -55,7 +55,7 @@ namespace ApiBase.Controllers
         [HttpGet("ObterPorEmail")]
         public IActionResult ObterPorEmail(string email)
         {
-            var pessoa = _context.PessoasBD.Where(x => x.Email.ToUpper().Contains(email.ToUpper())).ToList();
+            var pessoa = _context.Pessoa.Where(x => x.Email.ToUpper().Contains(email.ToUpper())).ToList();
             return Ok(pessoa);
         }
 
@@ -65,7 +65,7 @@ namespace ApiBase.Controllers
             if (pessoa.Nome == null && pessoa.Email == null)
                 return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
 
-            _context.PessoasBD.Add(pessoa);
+            _context.Pessoa.Add(pessoa);
             _context.SaveChanges();
             return CreatedAtAction(nameof(ObterPorId), new { Id = pessoa.Id }, pessoa);
         }
@@ -73,7 +73,7 @@ namespace ApiBase.Controllers
         [HttpPut("{id}")]
         public IActionResult Atualizar(int id, Pessoas pessoa)
         {
-            var PessoaBanco = _context.PessoasBD.Find(id);
+            var PessoaBanco = _context.Pessoa.Find(id);
 
             if (PessoaBanco == null)
                 return NotFound();
@@ -84,8 +84,8 @@ namespace ApiBase.Controllers
             PessoaBanco.Id = pessoa.Id;
             PessoaBanco.Nome = pessoa.Nome;
             PessoaBanco.Email = pessoa.Email;
-            PessoaBanco.DataNascimento = pessoa.DataNascimento;
-            _context.PessoasBD.Update(PessoaBanco);
+            PessoaBanco.DtNasc = pessoa.DtNasc;
+            _context.Pessoa.Update(PessoaBanco);
             _context.SaveChanges();
 
             return Ok();
@@ -94,12 +94,12 @@ namespace ApiBase.Controllers
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)
         {
-            var PessoaBanco = _context.PessoasBD.Find(id);
+            var PessoaBanco = _context.Pessoa.Find(id);
 
             if (PessoaBanco == null)
                 return NotFound();
 
-            _context.PessoasBD.Remove(PessoaBanco);
+            _context.Pessoa.Remove(PessoaBanco);
             _context.SaveChanges();
             return NoContent();
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "SoPzMVgkNpFJ/yhoaMjKzktASvd8weKomFwsvucBwNVcZQTbgzN1SWmtM3MaVfS6b5TJk2lxsL/LetmbU2ocDA==",
+  "dgSpecHash": "ZfjGhn6OukpVRjqWg3caFrT7R7yZj0dDm/kOBsP3QoTKRNtsRKom7GFC7AKPerxHvh/MQH2+q42O1QRLuy6DfQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj",
+  "projectFilePath": "c:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Gabriel\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Gabriel\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

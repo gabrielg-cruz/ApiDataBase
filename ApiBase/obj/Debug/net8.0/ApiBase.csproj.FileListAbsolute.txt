@@ -135,3 +135,4 @@ c:\Users\Gabriel\Desktop\Fatec\Projeto API\ApiBase\obj\Debug\net8.0\refint\ApiBa
 c:\Users\Gabriel\Desktop\Fatec\Projeto API\ApiBase\obj\Debug\net8.0\ApiBase.pdb
 c:\Users\Gabriel\Desktop\Fatec\Projeto API\ApiBase\obj\Debug\net8.0\ApiBase.genruntimeconfig.cache
 c:\Users\Gabriel\Desktop\Fatec\Projeto API\ApiBase\obj\Debug\net8.0\ref\ApiBase.dll
+c:\Users\Gabriel\Desktop\Fatec\Projeto API\ApiBase\obj\Debug\net8.0\ApiBase.sourcelink.json

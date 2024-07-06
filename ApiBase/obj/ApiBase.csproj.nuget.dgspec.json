@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj": {}
+    "c:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj": {
+    "c:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj",
+        "projectUniqueName": "c:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj",
         "projectName": "ApiBase",
-        "projectPath": "C:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj",
+        "projectPath": "c:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\ApiBase.csproj",
         "packagesPath": "C:\\Users\\Gabriel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\obj\\",
+        "outputPath": "c:\\Users\\Gabriel\\Desktop\\Fatec\\Projeto API\\ApiBase\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -21,9 +21,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
+        "originalTargetFrameworks": ["net8.0"],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
@@ -36,9 +34,7 @@
           }
         },
         "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
+          "warnAsError": ["NU1605"]
         }
       },
       "frameworks": {
