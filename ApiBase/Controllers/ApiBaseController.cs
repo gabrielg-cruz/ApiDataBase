@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using ApiBase.Context;
 using ApiBase.Models;
+using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiBase.Controllers
 {
@@ -35,22 +37,31 @@ namespace ApiBase.Controllers
         [HttpGet("ObterPorNome")]
         public IActionResult ObterPorNome(string nome)
         {
-            var pessoa = _context.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+            var pessoa = _context.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToListAsync();
             return Ok(pessoa);
         }
 
-        /*    [HttpGet("ObterPorIdade")]
-            public IActionResult ObterPorIdade(DateTime dataNascimento)
-            {
-                DateTime pessoaDataNasc = _context.Pessoa.Where(x => x.DataNascimento.Date == dataNascimento.Date);
-                var idade = pessoaDataNasc.Year - DateTime.Now.Year;
+        [HttpGet("ObterPorIdadeApartirDe")]
+        public IActionResult ObterPorIdade(int idade)
+        {
+            var pessoaDataNasc = _context.Pessoa.AsEnumerable().Where(x => CalcularIdade(x.DtNasc) >= idade).ToList();
 
-                if (DateTime.Now < pessoaDataNasc.AddYears(idade))
-                {
-                    idade--;
-                }
-                return Ok(idade);
-            }*/
+            if (pessoaDataNasc.Count == 0)
+                return NotFound();
+
+            return Ok(pessoaDataNasc);
+        }
+        private int CalcularIdade(DateTime dtNasc)
+        {
+            int PessoaIdade = DateTime.Now.Year - dtNasc.Year;
+
+            if (DateTime.Now < dtNasc.AddYears(PessoaIdade))
+            {
+                PessoaIdade--;
+            }
+            Console.WriteLine(PessoaIdade);
+            return PessoaIdade;
+        }
 
         [HttpGet("ObterPorEmail")]
         public IActionResult ObterPorEmail(string email)
@@ -62,8 +73,16 @@ namespace ApiBase.Controllers
         [HttpPost]
         public IActionResult Criar(Pessoas pessoa)
         {
-            if (pessoa.Nome == null && pessoa.Email == null)
-                return BadRequest(new { Erro = "A data da tarefa não pode ser vazia" });
+            if (pessoa.Nome.Trim() == null || pessoa.Nome.Trim() == "")
+                return BadRequest(new { Erro = "Campo Nome é obrigatório" });
+            if (pessoa.Nome.Length < 2)
+                return BadRequest(new { Erro = "Digite um nome valido" });
+
+
+            if (pessoa.Email.Trim() == "" || pessoa.Email.Trim() == null)
+                return BadRequest(new { Erro = "Campo Email é obrigatório" });
+            if (pessoa.Email.Length < 3)
+                return BadRequest(new { Erro = "Digite um Email valido" });
 
             _context.Pessoa.Add(pessoa);
             _context.SaveChanges();
@@ -78,7 +97,7 @@ namespace ApiBase.Controllers
             if (PessoaBanco == null)
                 return NotFound();
 
-            if (PessoaBanco.Nome == null && PessoaBanco.Email == null)
+            if (pessoa.Nome.Trim() == null || pessoa.Nome.Trim() == "" || pessoa.Email.Trim() == "" || pessoa.Email.Trim() == null)
                 return BadRequest(new { Erro = "O Nome e o Email são obrigatórios" });
 
             PessoaBanco.Nome = pessoa.Nome;

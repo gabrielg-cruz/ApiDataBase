@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ApiBase.Context;
 using System.Globalization;
 
-CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
-CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
