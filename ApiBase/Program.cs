@@ -9,7 +9,7 @@ using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<OrganizadorContext>(options =>
+builder.Services.AddDbContext<PessoasContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers().AddJsonOptions(options =>
