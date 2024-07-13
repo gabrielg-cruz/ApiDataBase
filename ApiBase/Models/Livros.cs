@@ -11,8 +11,8 @@ namespace ApiBase.Models
         public required string Titulo { get; set; }
         public required string Editora { get; set; }
         public required string Capa { get; set; }
-        public required bool Status { get; set; }
+        public required bool Estado { get; set; }
         public DateTime DataPubl { get; set; }
-
+        public int? PessoaId { get; set; }
     }
 }
