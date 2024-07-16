@@ -6,7 +6,7 @@ namespace ApiBase.Models
         public required int PessoaId { get; set; }
         public required int LivroId { get; set; }
         public DateTime DtEmprestimo { get; set; }
-        public DateTime DtDevolução { get; set; }
+        public DateTime DtDevolucao { get; set; }
         public bool Atrasado { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace ApiBase.Controllers
         [HttpGet("{id}")]
         public IActionResult ObterPorId(int id)
         {
-            var Livros = _context.Livro.Find(id);
+            var Livros = _context.Livros.Find(id);
             if (Livros == null)
                 return NotFound();
 
@@ -33,16 +33,21 @@ namespace ApiBase.Controllers
         [HttpGet("ObterTodos")]
         public IActionResult ObterTodos()
         {
-            var livro = _context.Livro.ToList();
+            var livro = _context.Livros.ToList();
             return Ok(livro);
         }
         [HttpGet("ObterEmprestados")]
         public IActionResult ObterEmprestados()
         {
-            var livro = _context.Livro.Where(x => x.Estado == true).ToList();
+            var livro = _context.Livros.Where(x => x.Estado == true).ToList();
             return Ok(livro);
         }
-
+        [HttpGet("ObterDisponiveis")]
+        public IActionResult ObterDisponiveis()
+        {
+            var livro = _context.Livros.Where(x => x.Estado == false).ToList();
+            return Ok(livro);
+        }
         [HttpPost]
         public IActionResult Criar(Livros livro)
         {
@@ -60,19 +65,19 @@ namespace ApiBase.Controllers
             if (livro.Estado == true && (livro.PessoaId == 0 || livro.PessoaId == null))
                 return BadRequest(new { Erro = "Se o livro esta emprestado a PessoaID é obrigatória" });
 
-            _context.Livro.Add(livro);
+            _context.Livros.Add(livro);
             _context.SaveChanges();
             return CreatedAtAction(nameof(ObterPorId), new { Id = livro.Id }, livro);
         }
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)
         {
-            var LivrosBanco = _context.Livro.Find(id);
+            var LivrosBanco = _context.Livros.Find(id);
 
             if (LivrosBanco == null)
                 return NotFound();
 
-            _context.Livro.Remove(LivrosBanco);
+            _context.Livros.Remove(LivrosBanco);
             _context.SaveChanges();
             return NoContent();
         }

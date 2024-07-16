@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiBase.Controllers
 {
-    [ApiController]
+
     [Route("[controller]")]
     public class PessoasController : ControllerBase
     {
@@ -37,7 +37,7 @@ namespace ApiBase.Controllers
         [HttpGet("ObterPorNome")]
         public IActionResult ObterPorNome(string nome)
         {
-            var pessoa = _context.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToListAsync();
+            var pessoa = _context.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
             return Ok(pessoa);
         }
 
@@ -99,13 +99,11 @@ namespace ApiBase.Controllers
 
             if (pessoa.Nome.Trim() == null || pessoa.Nome.Trim() == "" || pessoa.Email.Trim() == "" || pessoa.Email.Trim() == null)
                 return BadRequest(new { Erro = "O Nome e o Email são obrigatórios" });
-
             PessoaBanco.Nome = pessoa.Nome;
             PessoaBanco.Email = pessoa.Email;
             PessoaBanco.DtNasc = pessoa.DtNasc;
             _context.Pessoa.Update(PessoaBanco);
             _context.SaveChanges();
-
             return Ok();
         }
 
