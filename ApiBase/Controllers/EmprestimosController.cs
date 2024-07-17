@@ -26,7 +26,7 @@ namespace ApiBase.Controllers
         [HttpGet("{id}")]
         public IActionResult ObterPorId(int id)
         {
-            var Emprestimos = _emprestimoContext.Emprestimos.Find(id);
+            var Emprestimos = _emprestimoContext.Emprestimo.Find(id);
             if (Emprestimos == null)
                 return NotFound();
 
@@ -36,14 +36,14 @@ namespace ApiBase.Controllers
         [HttpGet("ObterTodos")]
         public IActionResult ObterTodos()
         {
-            var emprestimos = _emprestimoContext.Emprestimos.ToList();
+            var emprestimos = _emprestimoContext.Emprestimo.ToList();
             return Ok(emprestimos);
         }
 
         [HttpGet("ObterAtrasados")]
         public IActionResult ObterAtrasados()
         {
-            var emprestimos = _emprestimoContext.Emprestimos.Where(x => x.Atrasado == true).ToList();
+            var emprestimos = _emprestimoContext.Emprestimo.Where(x => x.Atrasado == true).ToList();
             return Ok(emprestimos);
         }
 
@@ -51,7 +51,7 @@ namespace ApiBase.Controllers
         public IActionResult ObterEmprestimosPorPessoa(int id)
         {
             var EstrangeiraID = _pessoaContext.Pessoa.Select(x => x.Id).ToList();
-            var emprestimos = _emprestimoContext.Emprestimos.Where(x => EstrangeiraID.Contains(x.PessoaId)).ToList();
+            var emprestimos = _emprestimoContext.Emprestimo.Where(x => EstrangeiraID.Contains(x.PessoaId)).ToList();
             return Ok(emprestimos);
         }
 
@@ -76,12 +76,13 @@ namespace ApiBase.Controllers
 
             if (emprestimo.DtDevolucao <= DateTime.Now)
                 return BadRequest(new { Erro = "A data de emprestimo deve ser uma data futura" });
-            var livro = _livroContext.Livros.Where(x => x.Id == emprestimo.LivroId);
-            _emprestimoContext.Emprestimos.Add(emprestimo);
-            _emprestimoContext.SaveChanges();
-
+            var livro = _livroContext.Livro.SingleOrDefault(x => x.Id == emprestimo.LivroId);
             if (livro == null)
                 return BadRequest(new { Erro = "Livro não existe" });
+
+            _emprestimoContext.Emprestimo.Add(emprestimo);
+            _emprestimoContext.SaveChanges();
+            livro.Estado = LivroEstado.Emprestado;
             return CreatedAtAction(nameof(ObterPorId), new { Id = emprestimo.Id }, emprestimo);
 
         }

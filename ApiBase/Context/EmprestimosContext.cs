@@ -10,6 +10,6 @@ namespace ApiBase.Context
 
         }
 
-        public DbSet<Emprestimos> Emprestimos { get; set; }
+        public DbSet<Emprestimos> Emprestimo { get; set; }
     }
 }

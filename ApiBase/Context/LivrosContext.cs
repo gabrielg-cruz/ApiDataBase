@@ -10,6 +10,18 @@ namespace ApiBase.Context
 
         }
 
-        public DbSet<Livros> Livros { get; set; }
+        public DbSet<Livros> Livro { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Livros>()
+                .Property(e => e.Estado)
+                .HasColumnType("tinyint")
+                .HasConversion(
+                    v => (int)v,
+                    v => (LivroEstado)v);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
