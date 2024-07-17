@@ -3,11 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using ApiBase.Context;
 using System.Globalization;
 using ApiBase.Models;
+using ApiBase.Services;
+using ApiBase.Services.Interfaces;
 
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 builder.Services.AddDbContext<PessoasContext>(options =>
@@ -16,6 +20,7 @@ builder.Services.AddDbContext<LivrosContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<EmprestimosContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IEmprestimoService, EmprestimosService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
