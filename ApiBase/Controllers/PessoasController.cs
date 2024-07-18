@@ -30,6 +30,9 @@ namespace ApiBase.Controllers
         [HttpGet("ObterTodos")]
         public IActionResult ObterTodos()
         {
+            if (_context.Pessoa.Any() == false)
+                return BadRequest(new { Erro = "Não há registro deste tipo" });
+
             var pessoa = _context.Pessoa.ToList();
             return Ok(pessoa);
         }
@@ -38,6 +41,8 @@ namespace ApiBase.Controllers
         public IActionResult ObterPorNome(string nome)
         {
             var pessoa = _context.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+            if (pessoa == null)
+                return BadRequest(new { Erro = "Não há registro com este nome" });
             return Ok(pessoa);
         }
 
@@ -84,6 +89,7 @@ namespace ApiBase.Controllers
             if (pessoa.Email.Length < 3)
                 return BadRequest(new { Erro = "Digite um Email valido" });
 
+            pessoa.Atrasos = 0;
             _context.Pessoa.Add(pessoa);
             _context.SaveChanges();
             return CreatedAtAction(nameof(ObterPorId), new { Id = pessoa.Id }, pessoa);

@@ -32,10 +32,10 @@ namespace ApiBase.Controllers
         [HttpGet("{id}")]
         public IActionResult ObterPorId(int id)
         {
+            _emprestimoService.VerificarEAtualizarAtrasos();
             var Emprestimos = _emprestimoContext.Emprestimo.Find(id);
             if (Emprestimos == null)
                 return NotFound();
-
             return Ok(Emprestimos);
         }
 
@@ -44,9 +44,6 @@ namespace ApiBase.Controllers
         {
             _emprestimoService.VerificarEAtualizarAtrasos();
             var emprestimos = _emprestimoContext.Emprestimo.ToList();
-
-
-
             return Ok(emprestimos);
         }
 
@@ -73,22 +70,60 @@ namespace ApiBase.Controllers
         [HttpPost]
         public IActionResult Criar(Emprestimos emprestimo)
         {
-            /*if (emprestimo.DtEmprestimo < DateTime.Now)
-                return BadRequest(new { Erro = $"A data não pode ser anterior a atual{DateTime.Now}" });*/
-
-            /* if (emprestimo.DtDevolucao <= DateTime.Now)
-                 return BadRequest(new { Erro = "A data de emprestimo deve ser uma data futura" });*/
+            DateTime Hoje = DateTime.Now;
+            DateTime DataFormatada = new(Hoje.Year, Hoje.Month, Hoje.Day);
             var livro = _livroContext.Livro.SingleOrDefault(x => x.Id == emprestimo.LivroId);
+
+            if (emprestimo.DtDevolucao <= DateTime.Now)
+                return BadRequest(new { Erro = "A data de emprestimo deve ser uma data futura" });
+
             if (livro == null)
                 return BadRequest(new { Erro = "Livro não existe" });
+
+            if (livro.Estado == LivroEstado.Reservado)
+                return BadRequest(new { Erro = "Livro esta reservado" });
+
+            if (livro.Estado == LivroEstado.Emprestado)
+            {
+                livro.Estado = LivroEstado.Reservado;
+                emprestimo.Atrasado = false;
+                _emprestimoContext.Emprestimo.Add(emprestimo);
+                _emprestimoContext.SaveChanges();
+                _livroContext.Livro.Update(livro);
+                _livroContext.SaveChanges();
+                return CreatedAtAction(nameof(ObterPorId), new { Id = emprestimo.Id }, emprestimo);
+            }
+            emprestimo.DtEmprestimo = DataFormatada;
             emprestimo.Atrasado = false;
             _emprestimoContext.Emprestimo.Add(emprestimo);
             _emprestimoContext.SaveChanges();
             livro.Estado = LivroEstado.Emprestado;
+            _livroContext.Livro.Update(livro);
+            _livroContext.SaveChanges();
             return CreatedAtAction(nameof(ObterPorId), new { Id = emprestimo.Id }, emprestimo);
-
         }
 
+        [HttpDelete("DeletarEmprestimo")]
+        public IActionResult DeletarEmprestimo(int id)
+        {
+            _emprestimoService.VerificarEAtualizarAtrasos();
+            var EmprestimoBanco = _emprestimoContext.Emprestimo.Find(id);
+            if (EmprestimoBanco == null)
+                return NotFound();
+            if (EmprestimoBanco.Atrasado == true)
+            {
+                var pessoa = _pessoaContext.Pessoa.Find(EmprestimoBanco.PessoaId);
+                if (pessoa != null)
+                {
+                    pessoa.Atrasos += 1;
+                    _pessoaContext.Pessoa.Update(pessoa);
+                    _pessoaContext.SaveChanges();
+                }
+            }
+            _emprestimoContext.Emprestimo.Remove(EmprestimoBanco);
+            _emprestimoContext.SaveChanges();
+            return NoContent();
 
+        }
     }
 }

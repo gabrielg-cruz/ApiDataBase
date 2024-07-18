@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiBase.Context;
+using ApiBase.Models;
 using ApiBase.Services.Interfaces;
 
 namespace ApiBase.Services
@@ -10,16 +11,19 @@ namespace ApiBase.Services
 
     public class EmprestimosService : IEmprestimoService
     {
-        private readonly EmprestimosContext _context;
+        private readonly EmprestimosContext _EmprestimoContext;
+        private readonly LivrosContext _LivroContext;
 
-        public EmprestimosService(EmprestimosContext context)
+        public EmprestimosService(EmprestimosContext emprestimoContext, LivrosContext livrosContext)
         {
-            _context = context;
+            _EmprestimoContext = emprestimoContext;
+            _LivroContext = livrosContext;
         }
 
         public void VerificarEAtualizarAtrasos()
         {
-            var emprestimosAtrasados = _context.Emprestimo.Where(e => e.DtDevolucao < DateTime.Now && !e.Atrasado).ToList();
+            var emprestimosAtrasados = _EmprestimoContext.Emprestimo.Where(x => x.DtDevolucao < DateTime.Now && !x.Atrasado).ToList();
+
             if (emprestimosAtrasados.Count == 0)
                 return;
 
@@ -28,9 +32,7 @@ namespace ApiBase.Services
                 emprestimo.Atrasado = true;
             }
 
-            _context.SaveChanges();
+            _EmprestimoContext.SaveChanges();
         }
-
-
     }
 }
