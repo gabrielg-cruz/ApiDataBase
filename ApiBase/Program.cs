@@ -21,6 +21,7 @@ builder.Services.AddDbContext<LivrosContext>(options =>
 builder.Services.AddDbContext<EmprestimosContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IEmprestimoService, EmprestimosService>();
+builder.Services.AddScoped<IPessoasService, PessoasService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));

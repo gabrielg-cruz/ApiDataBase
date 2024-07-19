@@ -3,6 +3,8 @@ using ApiBase.Context;
 using ApiBase.Models;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.EntityFrameworkCore;
+using ApiBase.Services;
+using ApiBase.Services.Interfaces;
 
 namespace ApiBase.Controllers
 {
@@ -11,9 +13,11 @@ namespace ApiBase.Controllers
     public class PessoasController : ControllerBase
     {
         private readonly PessoasContext _context;
+        private readonly IPessoasService _service;
 
-        public PessoasController(PessoasContext context)
+        public PessoasController(PessoasContext context, IPessoasService service)
         {
+            _service = service;
             _context = context;
         }
 
@@ -49,23 +53,12 @@ namespace ApiBase.Controllers
         [HttpGet("ObterPorIdadeApartirDe")]
         public IActionResult ObterPorIdade(int idade)
         {
-            var pessoaDataNasc = _context.Pessoa.AsEnumerable().Where(x => CalcularIdade(x.DtNasc) >= idade).ToList();
+            var pessoaDataNasc = _context.Pessoa.AsEnumerable().Where(x => _service.CalcularIdade(x.DtNasc) >= idade).ToList();
 
             if (pessoaDataNasc.Count == 0)
                 return NotFound();
 
             return Ok(pessoaDataNasc);
-        }
-        private int CalcularIdade(DateTime dtNasc)
-        {
-            int PessoaIdade = DateTime.Now.Year - dtNasc.Year;
-
-            if (DateTime.Now < dtNasc.AddYears(PessoaIdade))
-            {
-                PessoaIdade--;
-            }
-            Console.WriteLine(PessoaIdade);
-            return PessoaIdade;
         }
 
         [HttpGet("ObterPorEmail")]
