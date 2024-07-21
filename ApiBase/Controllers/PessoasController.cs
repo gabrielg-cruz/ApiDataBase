@@ -48,13 +48,13 @@ namespace ApiBase.Controllers
                 return BadRequest(new { Erro = "Não há registro com este nome" });
             return Ok(pessoa);
         }
-        // TODO: Implementar o método ObterPorIdadeApartirDe
+
         [HttpGet("ObterPorIdadeApartirDe")]
         public IActionResult ObterPorIdade(int idade)
         {
-            var pessoaDataNasc = _context.Pessoa.AsEnumerable().Where(x => _service.CalcularIdade(x.DtNasc) >= idade).ToList();
+            var pessoaDataNasc = _service.ObterPorIdade(idade);
 
-            if (pessoaDataNasc.Count == 0)
+            if (!pessoaDataNasc.Any())
                 return NotFound();
 
             return Ok(pessoaDataNasc);

@@ -22,6 +22,11 @@ namespace ApiBase.Services
             _LivroContext = livrosContext;
         }
 
+        public IEnumerable<Pessoas> ObterPorIdade(int idade)
+        {
+            var pessoaDataNasc = _PessoasContext.Pessoa.AsEnumerable().Where(x => CalcularIdade(x.DtNasc) >= idade).ToList();
+            return pessoaDataNasc;
+        }
         public IEnumerable<Pessoas> ObterPorNome(string nome)
         {
             var pessoa = _PessoasContext.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();

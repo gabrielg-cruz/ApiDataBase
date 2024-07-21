@@ -11,5 +11,6 @@ namespace ApiBase.Services.Interfaces
         int CalcularIdade(DateTime dtNasc);
         IEnumerable<Pessoas> ObterTodos();
         IEnumerable<Pessoas> ObterPorNome(string nome);
+        IEnumerable<Pessoas> ObterPorIdade(int idade);
     }
 }
