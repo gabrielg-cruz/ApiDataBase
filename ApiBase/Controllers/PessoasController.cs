@@ -34,22 +34,21 @@ namespace ApiBase.Controllers
         [HttpGet("ObterTodos")]
         public IActionResult ObterTodos()
         {
-            if (_context.Pessoa.Any() == false)
+            var pessoa = _service.ObterTodos();
+            if (!pessoa.Any())
                 return BadRequest(new { Erro = "Não há registro deste tipo" });
-
-            var pessoa = _context.Pessoa.ToList();
             return Ok(pessoa);
         }
 
         [HttpGet("ObterPorNome")]
         public IActionResult ObterPorNome(string nome)
         {
-            var pessoa = _context.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+            var pessoa = _service.ObterPorNome(nome);
             if (pessoa == null)
                 return BadRequest(new { Erro = "Não há registro com este nome" });
             return Ok(pessoa);
         }
-
+        // TODO: Implementar o método ObterPorIdadeApartirDe
         [HttpGet("ObterPorIdadeApartirDe")]
         public IActionResult ObterPorIdade(int idade)
         {
@@ -60,7 +59,7 @@ namespace ApiBase.Controllers
 
             return Ok(pessoaDataNasc);
         }
-
+        //TODO: Implementar o método ObterPorEmail
         [HttpGet("ObterPorEmail")]
         public IActionResult ObterPorEmail(string email)
         {
@@ -68,6 +67,7 @@ namespace ApiBase.Controllers
             return Ok(pessoa);
         }
 
+        //TODO: Implementar o método ObterPorAtraso
         [HttpPost]
         public IActionResult Criar(Pessoas pessoa)
         {
@@ -87,7 +87,7 @@ namespace ApiBase.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(ObterPorId), new { Id = pessoa.Id }, pessoa);
         }
-
+        //TODO: Implementar o método Atualizar
         [HttpPut("{id}")]
         public IActionResult Atualizar(int id, Pessoas pessoa)
         {
@@ -105,7 +105,7 @@ namespace ApiBase.Controllers
             _context.SaveChanges();
             return Ok();
         }
-
+        //TODO: Implementar o método Deletar
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)
         {

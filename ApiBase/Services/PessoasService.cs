@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using ApiBase.Context;
 using ApiBase.Models;
 using ApiBase.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
 namespace ApiBase.Services
 {
@@ -18,6 +20,16 @@ namespace ApiBase.Services
         {
             _PessoasContext = pessoasContext;
             _LivroContext = livrosContext;
+        }
+
+        public IEnumerable<Pessoas> ObterPorNome(string nome)
+        {
+            var pessoa = _PessoasContext.Pessoa.Where(x => x.Nome.ToUpper().Contains(nome.ToUpper())).ToList();
+            return pessoa;
+        }
+        public IEnumerable<Pessoas> ObterTodos()
+        {
+            return _PessoasContext.Pessoa.ToList();
         }
 
         public int CalcularIdade(DateTime dtNasc)

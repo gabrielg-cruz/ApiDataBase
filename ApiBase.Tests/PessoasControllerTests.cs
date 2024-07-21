@@ -39,6 +39,7 @@ namespace ApiBase.Tests.Controllers
         public void ObterPorId_RetornaOkResultado_QuandoPessoaNaoNull(int id, string nome)
         {
             // Arrange
+            var pessoa = new Pessoa { Nome = "John Doe", Idade = 30, Email = "john.doe@example.com" };
             _serviceMock.Setup(x => x.ObterPorId(id)).Returns(pessoa);
 
             // Act
