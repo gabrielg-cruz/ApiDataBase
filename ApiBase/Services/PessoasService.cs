@@ -15,13 +15,17 @@ namespace ApiBase.Services
     {
         private readonly PessoasContext _PessoasContext;
         private readonly LivrosContext _LivroContext;
-
         public PessoasService(PessoasContext pessoasContext, LivrosContext livrosContext)
         {
             _PessoasContext = pessoasContext;
             _LivroContext = livrosContext;
         }
 
+        public IEnumerable<Pessoas> ObterPorEmail(string email)
+        {
+            var pessoa = _PessoasContext.Pessoa.Where(x => x.Email.ToUpper().Contains(email.ToUpper())).ToList();
+            return pessoa;
+        }
         public IEnumerable<Pessoas> ObterPorIdade(int idade)
         {
             var pessoaDataNasc = _PessoasContext.Pessoa.AsEnumerable().Where(x => CalcularIdade(x.DtNasc) >= idade).ToList();

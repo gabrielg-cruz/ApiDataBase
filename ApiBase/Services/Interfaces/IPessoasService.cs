@@ -12,5 +12,6 @@ namespace ApiBase.Services.Interfaces
         IEnumerable<Pessoas> ObterTodos();
         IEnumerable<Pessoas> ObterPorNome(string nome);
         IEnumerable<Pessoas> ObterPorIdade(int idade);
+        IEnumerable<Pessoas> ObterPorEmail(string email);
     }
 }

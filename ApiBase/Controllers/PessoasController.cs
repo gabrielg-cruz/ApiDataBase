@@ -59,11 +59,13 @@ namespace ApiBase.Controllers
 
             return Ok(pessoaDataNasc);
         }
-        //TODO: Implementar o método ObterPorEmail
+
         [HttpGet("ObterPorEmail")]
         public IActionResult ObterPorEmail(string email)
         {
-            var pessoa = _context.Pessoa.Where(x => x.Email.ToUpper().Contains(email.ToUpper())).ToList();
+            var pessoa = _service.ObterPorEmail(email);
+            if (pessoa == null)
+                return BadRequest(new { Erro = "Não há registro com este email" });
             return Ok(pessoa);
         }
 
