@@ -1,0 +1,26 @@
+# Ignore the bin folder
+bin/
+obj/
+
+# Ignore common file extensions
+*.exe
+*.dll
+*.so
+*.dylib
+*.jar
+*.war
+*.ear
+*.class
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.xz
+*.csv
+*.log
+*.tmp
+*.swp

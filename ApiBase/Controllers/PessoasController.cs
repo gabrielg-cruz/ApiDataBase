@@ -69,56 +69,30 @@ namespace ApiBase.Controllers
             return Ok(pessoa);
         }
 
-        //TODO: Implementar o método ObterPorAtraso
+
         [HttpPost]
         public IActionResult Criar(Pessoas pessoa)
         {
-            if (pessoa.Nome.Trim() == null || pessoa.Nome.Trim() == "")
-                return BadRequest(new { Erro = "Campo Nome é obrigatório" });
-            if (pessoa.Nome.Length < 2)
-                return BadRequest(new { Erro = "Digite um nome valido" });
-
-
-            if (pessoa.Email.Trim() == "" || pessoa.Email.Trim() == null)
-                return BadRequest(new { Erro = "Campo Email é obrigatório" });
-            if (pessoa.Email.Length < 3)
-                return BadRequest(new { Erro = "Digite um Email valido" });
-
-            pessoa.Atrasos = 0;
-            _context.Pessoa.Add(pessoa);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(ObterPorId), new { Id = pessoa.Id }, pessoa);
+            var pessoaCriada = _service.Criar(pessoa);
+            if (!pessoaCriada.Sucesso)
+                return BadRequest(new { pessoaCriada.Erro });
+            return CreatedAtAction(nameof(ObterPorId), new { pessoaCriada.Pessoa.Id }, pessoaCriada.Pessoa);
         }
-        //TODO: Implementar o método Atualizar
+
         [HttpPut("{id}")]
         public IActionResult Atualizar(int id, Pessoas pessoa)
         {
-            var PessoaBanco = _context.Pessoa.Find(id);
-
-            if (PessoaBanco == null)
-                return NotFound();
-
-            if (pessoa.Nome.Trim() == null || pessoa.Nome.Trim() == "" || pessoa.Email.Trim() == "" || pessoa.Email.Trim() == null)
-                return BadRequest(new { Erro = "O Nome e o Email são obrigatórios" });
-            PessoaBanco.Nome = pessoa.Nome;
-            PessoaBanco.Email = pessoa.Email;
-            PessoaBanco.DtNasc = pessoa.DtNasc;
-            _context.Pessoa.Update(PessoaBanco);
-            _context.SaveChanges();
+            var PessoaBanco = _service.Atualizar(id, pessoa);
+            if (!PessoaBanco.Sucesso)
+                return BadRequest(new { PessoaBanco.Erro });
             return Ok();
         }
-        //TODO: Implementar o método Deletar
+
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)
         {
-            var PessoaBanco = _context.Pessoa.Find(id);
-
-            if (PessoaBanco == null)
-                return NotFound();
-
-            _context.Pessoa.Remove(PessoaBanco);
-            _context.SaveChanges();
-            return NoContent();
+            var PessoaBanco = _service.Deletar(id);
+            return PessoaBanco.Sucesso ? Ok() : BadRequest(new { PessoaBanco.Erro });
         }
     }
 }
